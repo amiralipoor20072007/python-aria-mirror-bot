@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import socket
 from megasdkrestclient import MegaSdkRestClient, errors as mega_err
 import subprocess
-import redis
+# import redis
 
 socket.setdefaulttimeout(600)
 
@@ -60,18 +60,18 @@ status_reply_dict = {}
 # Value: An object of Status
 download_dict = {}
 # Stores list of users and chats the bot is authorized to use in
-redis_client = None
+# redis_client = None
 AUTHORIZED_CHATS = set()
 
-redis_authorised_chats_key = 'bots:authorized_chats'
-def redis_init():
-    global redis_client
-    redis_client = redis.Redis(host=getConfig('REDIS_HOST'), port=int(getConfig('REDIS_PORT')), password=getConfig('REDIS_PASSWORD'))
-    ids = redis_client.smembers(redis_authorised_chats_key)
-    for id in ids:
-        AUTHORIZED_CHATS.add(int(id))
-redis_thread = threading.Thread(target=redis_init)
-redis_thread.start()
+# redis_authorised_chats_key = 'bots:authorized_chats'
+# def redis_init():
+    # global redis_client
+    # redis_client = redis.Redis(host=getConfig('REDIS_HOST'), port=int(getConfig('REDIS_PORT')), password=getConfig('REDIS_PASSWORD'))
+    # ids = redis_client.smembers(redis_authorised_chats_key)
+    # for id in ids:
+        # AUTHORIZED_CHATS.add(int(id))
+# redis_thread = threading.Thread(target=redis_init)
+# redis_thread.start()
 try:
     BOT_TOKEN = getConfig('BOT_TOKEN')
     parent_id = getConfig('GDRIVE_FOLDER_ID')
@@ -146,4 +146,4 @@ except KeyError:
 updater = tg.Updater(token=BOT_TOKEN,use_context=True)
 bot = updater.bot
 dispatcher = updater.dispatcher
-redis_thread.join()
+# redis_thread.join()

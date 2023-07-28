@@ -6,7 +6,7 @@ from bot.helper.telegram_helper.filters import CustomFilters
 from telegram.ext import Filters
 from telegram import Update
 from bot.helper.telegram_helper.bot_commands import BotCommands
-from bot import redis_client, redis_authorised_chats_key
+# from bot import redis_client, redis_authorised_chats_key
 
 @run_async
 def authorize(update,context):
@@ -16,7 +16,7 @@ def authorize(update,context):
         # Trying to authorize a chat
         chat_id = update.effective_chat.id
         if chat_id not in AUTHORIZED_CHATS:
-            redis_client.sadd(redis_authorised_chats_key, chat_id)
+            # redis_client.sadd(redis_authorised_chats_key, chat_id)
             AUTHORIZED_CHATS.add(chat_id)
             msg = 'Chat authorized'
         else:
@@ -25,7 +25,7 @@ def authorize(update,context):
         # Trying to authorize someone in specific
         user_id = reply_message.from_user.id
         if user_id not in AUTHORIZED_CHATS:
-            redis_client.sadd(redis_authorised_chats_key, user_id)
+            # redis_client.sadd(redis_authorised_chats_key, user_id)
             AUTHORIZED_CHATS.add(user_id)
             msg = 'Person Authorized to use the bot!'
         else:
@@ -41,7 +41,7 @@ def unauthorize(update,context):
         chat_id = update.effective_chat.id
         if chat_id in AUTHORIZED_CHATS:
             AUTHORIZED_CHATS.remove(chat_id)
-            redis_client.srem(redis_authorised_chats_key, chat_id)
+            # redis_client.srem(redis_authorised_chats_key, chat_id)
             msg = 'Chat unauthorized'
         else:
             msg = 'Already unauthorized chat'
@@ -50,7 +50,7 @@ def unauthorize(update,context):
         user_id = reply_message.from_user.id
         if user_id in AUTHORIZED_CHATS:
             AUTHORIZED_CHATS.remove(user_id)
-            redis_client.srem(redis_authorised_chats_key, user_id)
+            # redis_client.srem(redis_authorised_chats_key, user_id)
             msg = 'Person unauthorized to use the bot!'
         else:
             msg = 'Person already unauthorized!'
